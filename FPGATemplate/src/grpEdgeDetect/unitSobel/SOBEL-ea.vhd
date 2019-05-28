@@ -72,39 +72,62 @@ entity SOBEL is
 		gNumOfChannels		 	 : integer
 	);
 	port(
-		iInputVectorA		 : in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-		iInputVectorB		 : in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-		iInputVectorC		 : in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+		iInputVectorA
+						: in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+		iInputVectorB
+						: in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+		iInputVectorC
+						: in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 
-		iInputVectorD		 : in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-		iInputVectorM		 : in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-		iInputVectorF		 : in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+		iInputVectorD
+						: in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+		iInputVectorM
+						: in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+		iInputVectorF
+						: in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 
-		iInputVectorG		 : in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-		iInputVectorH		 : in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-		iInputVectorI		 : in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+		iInputVectorG
+						: in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+		iInputVectorH
+						: in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+		iInputVectorI
+						: in sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 
 		iClk 				 		 : in std_ulogic;
 		iResetN				   : in std_ulogic;
 
-		oOutputVector		 : out sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0)
+		oOutputVector
+						: out sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0)
 	);
 end entity;
 
 architecture RTL of SOBEL is
-	signal A		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-	signal B		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-	signal C		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+	signal A
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+	signal B
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+	signal C
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 
-	signal D		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-	signal M		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-	signal F		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 
-	signal G		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-	signal H		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
-	signal I		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+	signal D
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+	signal M
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+	signal F
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 
-	signal O		 			 					 : sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+						
+	signal G
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+	signal H
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+	signal I
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
+
+						
+	signal O
+						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 begin
 
 	  A      <= iInputVectorA;

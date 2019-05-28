@@ -69,7 +69,8 @@ entity SOBEL_BASE is
 end entity;
 
 architecture RTL of SOBEL_BASE is
-	constant cSobelResetConst	   : unsigned(gBitWidth*2-1 downto 0) := (others=>'0');
+	constant cSobelResetConst
+										 : unsigned(gBitWidth*2-1 downto 0) := (others=>'0');
 	signal SOBEL_MUL_A_R         : unsigned(gBitWidth*2-1 downto 0);
 	signal SOBEL_MUL_B_R         : unsigned(gBitWidth*2-1 downto 0);
 	signal SOBEL_MUL_C_R         : unsigned(gBitWidth*2-1 downto 0);
