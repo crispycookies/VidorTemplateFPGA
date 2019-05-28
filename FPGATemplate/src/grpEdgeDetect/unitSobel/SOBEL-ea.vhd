@@ -34,6 +34,8 @@ use IEEE.std_logic_1164.all;
 
 package SobelPackage is
 		type sobel_type_t is array(natural range<>) of unsigned(natural range<>);
+		type sobel_line_t is array(natural range<>) of sobel_type_t;
+		type sobel_matrix_t is array(natural range<>) of sobel_line_t;
 end package;
 
 package body SobelPackage is
