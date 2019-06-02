@@ -112,6 +112,9 @@ architecture RTL of FPGATemplate is
 	signal iInputVectorH		: sobel_type_t(0 downto 0)(7  downto 0);
 	signal iInputVectorI		: sobel_type_t(0 downto 0)(7  downto 0);
 	signal oOutputVector		: sobel_type_t(0 downto 0)(7  downto 0);
+
+	signal AddressRead					: unsigned(15 downto 0);
+	signal AddressWrite					: unsigned(15 downto 0);
 begin
 
 		iInputVectorA(0)	<= bSDRAM_DQ(7 downto 0);
@@ -181,42 +184,67 @@ begin
 		iInputVectorI(0)(6) <= bMIPI_SDA;
 		iInputVectorI(0)(7) <= bMIPI_SCL;
 
-		oSDRAM_ADDR(7 downto 0) <= oOutputVector(0);
+		oSDRAM_ADDR(7 downto 0)	  <= oOutputVector(0);
 
-	SOBEL_OP:
-		entity work.SOBEL(RTL)
+		AddressRead(7 downto 0) 	<= iInputVectorA(0);
+		AddressRead(15 downto 8) 	<= iInputVectorB(0);
+
+		AddressWrite(7 downto 0)  <= iInputVectorH(0);
+		AddressWrite(15 downto 8) <= iInputVectorG(0);
+
+SOBELRAM:
+		entity work.SIMPLE_RAM(RTL)
 			generic map(
-						gBitWidth								=> 		8	 ,
-						gOffset									=> 		125,
+	    	gAddressWidth     => 16,
+	    	gDataBusWidth     => 8,
+	    	gRamSize          => 53000
+	  	)
+	  	port map(
+	    	iAddressWrite     => AddressWrite,
+	    	iAddressRead      => AddressRead,
+	    	iDataBus          => iInputVectorC(0),
+	    	oDataOut          => oOutputVector(0),
+	    	iCLK              => iClk,
+	    	iWriteEN          => '1',
+				iReadEN						=> iInputVectorI(0)(1)
+	  	);
 
-						gWeightPerOperationA		=> 		1,
-						gWeightPerOperationB		=> 		2,
-						gWeightPerOperationC		=> 		1,
 
-						gWeightPerOperationD		=> 		0,
-						gWeightPerOperationM		=> 		0,
-						gWeightPerOperationF		=> 		0,
 
-						gWeightPerOperationG		=> 	 -1,
-						gWeightPerOperationH		=> 	 -2,
-						gWeightPerOperationI		=>	 -1,
+--SOBEL_OP:
+--	entity work.SOBEL(RTL)
+--		generic map(
+--					gBitWidth								=> 		8	 ,
+--					gOffset									=> 		125,
 
-						gNumOfChannels				  => 		1
-			)
-			port map(
-						iInputVectorA						=> iInputVectorA,
-						iInputVectorB						=> iInputVectorB,
-						iInputVectorC						=> iInputVectorC,
-						iInputVectorD						=> iInputVectorD,
-						iInputVectorM						=> iInputVectorM,
-						iInputVectorF						=> iInputVectorF,
-						iInputVectorG						=> iInputVectorG,
-						iInputVectorH						=> iInputVectorH,
-						iInputVectorI						=> iInputVectorI,
-						iClk 				 						=> iClk,
-						iResetN				 					=> iResetN,
-						oOutputVector						=> oOutputVector
-			);
+--					gWeightPerOperationA		=> 		1,
+--					gWeightPerOperationB		=> 		2,
+--					gWeightPerOperationC		=> 		1,
+
+--					gWeightPerOperationD		=> 		0,
+--					gWeightPerOperationM		=> 		0,
+--					gWeightPerOperationF		=> 		0,
+
+--					gWeightPerOperationG		=> 	 -1,
+--					gWeightPerOperationH		=> 	 -2,
+--					gWeightPerOperationI		=>	 -1,
+
+--					gNumOfChannels				  => 		1
+--		)
+--		port map(
+--					iInputVectorA						=> iInputVectorA,
+--					iInputVectorB						=> iInputVectorB,
+--					iInputVectorC						=> iInputVectorC,
+--					iInputVectorD						=> iInputVectorD,
+--					iInputVectorM						=> iInputVectorM,
+--					iInputVectorF						=> iInputVectorF,
+--					iInputVectorG						=> iInputVectorG,
+--					iInputVectorH						=> iInputVectorH,
+--					iInputVectorI						=> iInputVectorI,
+--					iClk 				 						=> iClk,
+--					iResetN				 					=> iResetN,
+--					oOutputVector						=> oOutputVector
+--		);
 
 
 end architecture;

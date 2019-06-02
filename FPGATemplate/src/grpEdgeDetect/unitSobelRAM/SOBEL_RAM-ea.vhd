@@ -53,7 +53,8 @@ entity SOBEL_RAM is
       gMatrixDimensionsSobelCellsY   : integer;
 
       gMatrixDimensionsRAMX          : integer;
-      gMatrixDimensionsRAMY          : integer
+      gMatrixDimensionsRAMY          : integer;
+      gInterfaceWidth                : integer
   );
   port(
       iAddress                       : unsigned(gInterfaceWidth-1 downto 0);
@@ -64,7 +65,7 @@ entity SOBEL_RAM is
       iRead                          : std_ulogic;
       oData                          : unsigned(gInterfaceWidth-1 downto 0);
       oReadable                      : std_ulogic;
-      oWriteable                     ; std_ulogic
+      oWriteable                     : std_ulogic
   );
 end entity;
 

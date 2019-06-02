@@ -117,7 +117,7 @@ architecture RTL of SOBEL is
 	signal F
 						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 
-						
+
 	signal G
 						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 	signal H
@@ -125,7 +125,7 @@ architecture RTL of SOBEL is
 	signal I
 						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 
-						
+
 	signal O
 						: sobel_type_t(gNumOfChannels-1 downto 0)(gBitWidth-1 downto 0);
 begin
@@ -147,8 +147,8 @@ SOBEL_CHANNELS:
 		SOBEL_OP:
 			entity work.SOBEL_BASE(RTL)
 				generic map(
-				      gBitWidth								=> 		gBitWidth						,
-				      gOffset									=> 		gOffset							,
+				      gBitWidth								=> 		gBitWidth,
+				      gOffset									=> 		gOffset,
 
 				      gWeightPerOperationA		=> 		gWeightPerOperationA,
 				      gWeightPerOperationB		=> 		gWeightPerOperationB,

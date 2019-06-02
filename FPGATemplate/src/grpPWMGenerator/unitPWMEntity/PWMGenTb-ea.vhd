@@ -16,7 +16,7 @@ begin
 
     iClk <= not iClk after 10 ns;
 
-    
+
     PWMBasic: entity work.PWMGen(Basic)
         generic map(
             gRegisterBitWidth => 12
@@ -28,7 +28,7 @@ begin
             iPRR => iPRR,
             oPulse => oPulseBasic
         );
-        
+
      PWMAdvanced: entity work.PWMGen(Advanced)
         generic map(
             gRegisterBitWidth => 12
