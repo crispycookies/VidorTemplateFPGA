@@ -2,7 +2,7 @@
 -- @date 2019.6.02
 -- @revision 1
 -- @file RAM Instantiation
--- @brief Configurable Operator(Sobel...)
+-- @brief RAM De Facto Dual Ported
 -- @description
 --    RAM Instantiation
 -- @license
@@ -26,42 +26,72 @@ use IEEE.std_logic_1164.all;
 entity DUAL_PORTED_RAM is
   generic(
     gAddressWidth     : integer;
-    gDataBusWidthLeft : integer;
-    gDataBusWidthRight: integer;
+    gDataBusWidth     : integer;
+    --gDataBusWidth     : integer;
     gRamSize          : integer
   );
   port(
-    iAddressWrite     : in unsigned(gAddressWidth-1 downto 0);
-    iAddressRead      : in unsigned(gAddressWidth-1 downto 0);
+    iAddressWriteA    : in unsigned(gAddressWidth-1 downto 0);
+    iAddressReadA     : in unsigned(gAddressWidth-1 downto 0);
 
-    iDataBus          : in unsigned(gDataBusWidth-1 downto 0);
-    oDataOut          : out unsigned(gDataBusWidth-1 downto 0);
+    iAddressWriteB    : in unsigned(gAddressWidth-1 downto 0);
+    iAddressReadB     : in unsigned(gAddressWidth-1 downto 0);
+
+    iDataBusA         : in unsigned(gDataBusWidth-1 downto 0);
+    oDataOutA         : out unsigned(gDataBusWidth-1 downto 0);
+
+    iDataBusB         : in unsigned(gDataBusWidth-1 downto 0);
+    oDataOutB         : out unsigned(gDataBusWidth-1 downto 0);
 
     iCLK              : in std_ulogic;
-    iWriteEN          : in std_ulogic;
-    iReadEN           : in std_ulogic
+    iWriteENA         : in std_ulogic;
+    iWriteENB         : in std_ulogic;
+    iReadENA          : in std_ulogic;
+    iReadENB          : in std_ulogic
   );
 end entity;
 
-architecture RTL of SIMPLE_RAM is
+architecture RTL of DUAL_PORTED_RAM is
   type MEM is array(gRamSize-1 downto 0) of unsigned(gDataBusWidth-1 downto 0);
-  signal RAM_BLOCK                : MEM;
-  signal AddrWrite                : integer range 0 to gRamSize;
-  signal AddrReadR, AddrReadNext  : integer range 0 to gRamSize;
+  shared variable RAM_BLOCK                  : MEM;
+  signal          AddrWriteA                 : integer range 0 to gRamSize;
+  signal          AddrWriteB                 : integer range 0 to gRamSize;
+  signal          AddrReadAR, AddrReadANext  : integer range 0 to gRamSize;
+  signal          AddrReadBR, AddrReadBNext  : integer range 0 to gRamSize;
 begin
 
-  AddrReadNext  <= to_integer(iAddressRead);
+  AddrWriteA     <= to_integer(iAddressWriteA);
+  AddrReadANext  <= to_integer(iAddressReadA);
 
-  RAMBLOCKWR: process(iCLK) is
+  AddrWriteB     <= to_integer(iAddressWriteB);
+  AddrReadBNext  <= to_integer(iAddressReadB);
+
+  RAMBLOCK: process(iCLK) is
     begin
       if(rising_edge(iCLK)) then
-        AddrReadR <= AddrReadNext;
-        if(iWriteEN = '1') then
-          RAM_BLOCK(AddrWrite) <= iDataBus;
+        AddrReadAR <= AddrReadANext;
+        if(iWriteENA = '1') then
+          RAM_BLOCK(AddrWriteA) := iDataBusA;
+          oDataOutA <= iDataBusA;
+        else
+          oDataOutA <= RAM_BLOCK(AddrReadANext);
         end if;
-        oDataOut <= RAM_BLOCK(AddrReadR);
       end if;
 
   end process;
+
+
+  RAMBLOCKB: process(iCLK) is
+    begin
+      if(rising_edge(iCLK)) then
+        AddrReadBR <= AddrReadBNext;
+        if(iWriteENB = '1') then
+          RAM_BLOCK(AddrWriteB) := iDataBusB;
+          oDataOutB <= iDataBusB;
+        else
+          oDataOutB <= RAM_BLOCK(AddrReadBNext);
+        end if;
+      end if;
+    end process;
 
 end architecture;

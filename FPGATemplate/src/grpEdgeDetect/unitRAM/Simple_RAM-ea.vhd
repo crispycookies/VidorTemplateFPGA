@@ -49,16 +49,21 @@ architecture RTL of SIMPLE_RAM is
   signal AddrReadR, AddrReadNext  : integer range 0 to gRamSize;
 begin
 
+  AddrWrite     <= to_integer(iAddressWrite);
   AddrReadNext  <= to_integer(iAddressRead);
 
-  RAMBLOCKWR: process(iCLK) is
+  RAMBLOCK: process(iCLK) is
     begin
       if(rising_edge(iCLK)) then
         AddrReadR <= AddrReadNext;
         if(iWriteEN = '1') then
           RAM_BLOCK(AddrWrite) <= iDataBus;
         end if;
-        oDataOut <= RAM_BLOCK(AddrReadR);
+        if(iReadEN='1') then
+          oDataOut <= RAM_BLOCK(AddrReadR);
+        else
+          oDataOut <=(others=>'0');
+        end if;
       end if;
 
   end process;
