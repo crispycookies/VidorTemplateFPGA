@@ -21,4 +21,8 @@ A Short Tutorial for the Arduino Vidor 4000 Board including a Template Project
 
 ## Known Bugs
 
-Several Synthesis Warnings
+Several Synthesis Warnings     
+
+## TO DO
+
+Code Refactoring. Atom display it as expected; Inconsistent indent in Github Viewer.
